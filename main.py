@@ -12,15 +12,15 @@ Database is an SQLite database
 
 from distutils import command
 from tkinter import *
-from openpyxl.workbook import Workbook
-from openpyxl import load_workbook
+# from openpyxl.workbook import Workbook
+# from openpyxl import load_workbook
 from showimage import show_img
 from showimage import ShowImage
 from choosefile import ChooseIMG
 
 # filepath = ''  # ./samples/line_removed.png
 
-##### EXCEL SHIT #####
+##### EXCEL SHIT (MAYBE REWRITE) #####
 
 # Load existing workbook
 # wb = load_workbook('database.xlsx')
