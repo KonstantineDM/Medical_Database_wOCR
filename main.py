@@ -9,6 +9,7 @@ Database is an SQLite database
 """
 
 # TODO: when showing image, make image window the active one
+# TODO: get the hold of Git
 
 from distutils import command
 from tkinter import *
