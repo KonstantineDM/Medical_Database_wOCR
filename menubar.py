@@ -4,7 +4,7 @@ from tkinter import Menu
 class MenuBar():
     """Create a menu bar in the GUI"""
     def __init__(self, parent=None, **configs):
-
+        self.parent = parent
         # Creating menu bar
         menu_bar = Menu(parent)
 
@@ -22,5 +22,18 @@ class MenuBar():
         menu_bar.add_cascade(label='Редактировать', menu=edit)
         edit.add_command(label='Placeholder', command=None)
 
+        # TODO: consider implementing switch between bright and dark themes
+        # # Add Theme menu
+        # theme = Menu(menu_bar, tearoff=0)
+        # menu_bar.add_cascade(label='Выбор темы', menu=theme)
+        # theme.add_command(label='Светлая', command=self.bright_theme)
+        # theme.add_command(label='Темная', command=self.dark_theme)
+
         # Display menu
         parent.config(menu=menu_bar)
+
+    # def bright_theme(self):
+    #     self.parent.configure(bg='white')
+    #
+    # def dark_theme(self):
+    #     self.parent.configure(bg='gray')
