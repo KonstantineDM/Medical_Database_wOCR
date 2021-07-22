@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
+import fonts_db
 
 class ChooseIMG(tk.Frame):
     filepath = ''
@@ -9,11 +10,13 @@ class ChooseIMG(tk.Frame):
         tk.Frame.__init__(self, parent)
         # self.title('Распознавание изображения')
         self.choose = tk.Button(parent, text='Выберите изображение',
-                                command=self.choose_file)
-        self.choose.pack(padx=20, side=tk.LEFT)
-        self.chosen = tk.Entry(parent, width=50)
+                                command=self.choose_file,
+                                font=fonts_db.font_medium(parent))
+        self.choose.grid(row=0, column=0, padx=20, pady=20)
+        self.chosen = tk.Entry(parent, width=65,
+                              font=fonts_db.font_small(parent))
         #self.chosen.insert(0, self.filepath)
-        self.chosen.pack(side=tk.LEFT)
+        self.chosen.grid(row=0, column=1, columnspan=2, padx=20)
 
     # Create 'Choose File' button
     def choose_file(self):
@@ -32,7 +35,7 @@ class ChooseIMG(tk.Frame):
     # Set value of "Chosen File" to entry box
     def set_chosen(self, filename):
         self.chosen.delete(0, tk.END)
-        self.chosen.insert(0, '/'.join(ChooseIMG.filepath.split('/')[-3:]))
+        self.chosen.insert(0, '/'.join(ChooseIMG.filepath.split('/')))
 
 
 if __name__ == '__main__':
