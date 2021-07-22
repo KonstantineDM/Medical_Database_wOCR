@@ -1,6 +1,6 @@
 # Creator   : Konstantin Davydov
-# # Start date: 2021-07-03 (Y-M-D)
-# # End date  : None
+# SD: 2021-07-03 (Y-M-D)
+# ED  : None
 
 """
 Program for managing database with records on educational medical info;
@@ -11,8 +11,6 @@ The second option in the main window opens an OCR tool GUI (based on pytesseract
  - process the image (ROI, morphology, clean marks)
  - recognize text in the image and save it to a file for further use
 """
-
-# TODO: when showing image, make image window the active one
 
 import os
 from distutils import command
