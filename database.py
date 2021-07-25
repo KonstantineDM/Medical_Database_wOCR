@@ -1,36 +1,43 @@
+import sqlite3
+from tkinter import *
+import os
+from utils.tk_table_dke  import Table
+
+
 """
 Create a database, connect it to program
 """
 
-import sqlite3
-from tkinter import *
-
-# TODO: rewrite as class?
-# TODO: поле описания сделать расширяемым (кнопку для открытия "Описание" в отдельном окне?)
+# TODO: поле описания сделать расширяемым (кнопку для открытия поля "Описание" в отдельном окне?)
 # TODO: добавить запрос подтверждения на удаление (askyesno и if?)
 # TODO: запрет на добавление пустой записи в базу (предупреждение или что-то типа)
-# TODO: показывать список тем в отдельном окне, а не в виде Лэйбла в окне программы
-# TODO: сделать редактиврование по ИД темы? а  не по ее названию
 
 def database():
-    # Creating tkinter main window
+    """
+    Main function for creating the database (db);
+
+    Contains functions:
+        delete - delete a record from db by the data in choose_box;
+        submit - confirm adding new record to the db;
+        query - make a query to the db to show the list of records;
+        save_changes - commit changes to the chosen db record;
+        edit - opens a GUI for editing db record (chosen in the choose_box);
+    """
+    # Create main window for db, separately from main.py GUI
     root = Tk()
-    root.title('ЭЛЕКТРОННЫЙ СПРАВОЧНИК')    # Название окна программы
+    root.title('БАЗА ДАННЫХ')    # Название окна программы
     root.geometry('720x460')
-    root.iconbitmap('squirrel.ico')
+    if os.path.isfile('squirrel.ico'): root.iconbitmap('squirrel.ico')
     root.grab_set()
     root.focus_force()
 
-    ##### DATABASE #####
     # Create a database or connect to one
     conn = sqlite3.connect('database_med.db')
-
     # Create cursor
     c = conn.cursor()
 
-    # Create table (executed only once)
-    '''
-    c.execute("""CREATE TABLE database 
+    # Create table if none exists
+    c.execute("""CREATE TABLE IF NOT EXISTS database 
                 (
                     topic text,
                     description text,
@@ -40,30 +47,27 @@ def database():
                     notes text
                 )"""
     )
-    '''
 
-    # Create a function to delete entry
     def delete():
-        # Create a database or connect to one
+        # Delete a chosen record from db (type in choose_box)
+
         conn = sqlite3.connect('database_med.db')
-        # Create cursor
         c = conn.cursor()
 
-        # Delete a record
-        c.execute("DELETE FROM database WHERE topic=" + "'" + choose_box.get() + "'")
+        # Delete a record (by record's ID)
+        c.execute("DELETE FROM database"
+                  " WHERE oid=" + "'" + choose_box.get() + "'")
+        # Clear the choose_box
         choose_box.delete(0, END)
 
-        # Commit changes
+        # Commit changes and close connection
         conn.commit()
-        # Close connection
         conn.close()
-        # Insert into Table
 
-    # Create a submit function for database
     def submit():
-        # Create a database or connect to one
+        # Confirm adding new record to the db
+
         conn = sqlite3.connect('database_med.db')
-        # Create cursor
         c = conn.cursor()
 
         c.execute("INSERT INTO database VALUES (:topic, :description, :symptoms, :treatment, :picts_videos, :notes)",
@@ -77,9 +81,8 @@ def database():
                   }
                   )
 
-        # Commit changes
+        # Commit changes and close connection
         conn.commit()
-        # Close connection
         conn.close()
 
         # Clear the textboxes
@@ -90,30 +93,24 @@ def database():
         picts_videos.delete(0, END)
         notes.delete(0, END)
 
-    # Create query function
     def query():
-        # Create a database or connect to one
+        """
+        Make a query to the db to show the preview list of records;
+        Represent query's results in the form of a table in a new window;
+        """
+
         conn = sqlite3.connect('database_med.db')
-        # Create cursor
         c = conn.cursor()
 
-        # Query the database
-        c.execute('SELECT *, oid FROM database')
+        # Query the database (by record's ID)
+        c.execute('SELECT oid, * FROM database')
         records = c.fetchall()
-        print(records)
 
-        # Loop through results
-        print_records = ''
-        for record in records:
-            print_records += str(record[-1]) + '\t' + str(record[0]) + '\n'
+        record_list = Toplevel()
+        Table(records, record_list)
 
-        query_label = Label(root, text=print_records)
-        query_label.grid(row=13, column=0, columnspan=2)
-
-
-        # Commit changes
+        # Commit changes and close connection
         conn.commit()
-        # Close connection
         conn.close()
 
     # Create Edit function to update record
@@ -160,9 +157,9 @@ def database():
         # Create cursor
         c = conn.cursor()
 
-        # Query the database
-        record_topic = choose_box.get()
-        c.execute('SELECT * FROM database WHERE topic=' + '"' + record_topic + '"')
+        # Query the database (by record's ID)
+        record_id = choose_box.get()
+        c.execute('SELECT * FROM database WHERE oid=' + '"' + record_id + '"')
         records = c.fetchall()
 
         # Create global variables for text box names
