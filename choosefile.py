@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
-import fonts_db
+from utils import fonts_db
 
 class ChooseIMG(tk.Frame):
     filepath = ''

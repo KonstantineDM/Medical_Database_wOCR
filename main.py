@@ -1,7 +1,7 @@
 import os
 from tkinter import *
 import database
-import fonts_db
+from utils import fonts_db
 from img_process import image_process
 from menubar import MenuBar
 

@@ -4,11 +4,12 @@ import numpy as np
 import os
 from tkinter import Tk, Button, E, W
 from choosefile import ChooseIMG
-import fonts_db
+from utils import fonts_db
 
 # TODO: how to pack pytesseract with pyinstaller (code has reference to tesseract's exe)? COMPILE BINARY?
 # https://stackoverflow.com/questions/59829470/pyinstaller-and-tesseract-ocr
 # TODO: add choise of the file type to save text to (txt or xls or any other...)
+# TODO: portability of pytesseract (for now path to it's exe is hardcoded)
 
 # Directory with Images (default)
 # img_dir = './samples'
